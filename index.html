@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Mobile Charger — Complete Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chivo+Mono:wght@300;400;700&display=swap');
+
+:root {
+  --sun:     #FFD000;
+  --amber:   #FF8C00;
+  --green:   #00E676;
+  --teal:    #00BCD4;
+  --panel:   #1B3A2A;
+  --bg:      #F5F0E8;
+  --paper:   #FDFAF4;
+  --ink:     #1A1A1A;
+  --rust:    #C0392B;
+  --mid:     #5A5A5A;
+  --rule:    #D8D0C0;
+  --shadow:  rgba(26,26,26,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+body {
+  background: var(--bg);
+  font-family: 'Chivo Mono', monospace;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 0 0 80px;
+  overflow-x: hidden;
+}
+
+/* ── SUN RAY HERO ── */
+.hero {
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  padding: 48px 32px 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+/* animated sun rays */
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-80px; right:-80px;
+  width:340px; height:340px;
+  background: conic-gradient(
+    var(--sun) 0deg 10deg,
+    transparent 10deg 30deg,
+    var(--sun) 30deg 40deg,
+    transparent 40deg 60deg,
+    var(--sun) 60deg 70deg,
+    transparent 70deg 90deg,
+    var(--sun) 90deg 100deg,
+    transparent 100deg 120deg,
+    var(--sun) 120deg 130deg,
+    transparent 130deg 150deg,
+    var(--sun) 150deg 160deg,
+    transparent 160deg 180deg,
+    var(--sun) 180deg 190deg,
+    transparent 190deg 210deg,
+    var(--sun) 210deg 220deg,
+    transparent 220deg 240deg,
+    var(--sun) 240deg 250deg,
+    transparent 250deg 270deg,
+    var(--sun) 270deg 280deg,
+    transparent 280deg 300deg,
+    var(--sun) 300deg 310deg,
+    transparent 310deg 330deg,
+    var(--sun) 330deg 340deg,
+    transparent 340deg 360deg
+  );
+  border-radius:50%;
+  opacity:0.08;
+  animation: rotateSun 30s linear infinite;
+}
+
+/* solar panel grid in hero */
+.hero::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(90deg, var(--sun), var(--amber), var(--green), var(--teal));
+}
+
+@keyframes rotateSun {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hero-left h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 8vw, 72px);
+  letter-spacing: 3px;
+  line-height: 0.9;
+  color: #fff;
+}
+.hero-left h1 .hl { color: var(--sun); }
+.hero-left .sub {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+.spec-chip {
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  border: 1px solid #333;
+  color: #aaa;
+  text-transform: uppercase;
+}
+.spec-chip.lit { border-color: var(--sun); color: var(--sun); }
+
+/* ── MAIN WRAP ── */
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--mid);
+  border-left: 3px solid var(--sun);
+  padding-left: 10px;
+  margin-bottom: 18px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  box-shadow: 4px 4px 0 var(--rule);
+  padding: 24px;
+  border-radius: 2px;
+  animation: rise 0.5s ease both;
+}
+@keyframes rise {
+  from { opacity:0; transform: translateY(14px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════
+   LIVE SIMULATOR
+══════════════════════════════ */
+#simulator {
+  margin-bottom: 32px;
+}
+
+.sim-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 700px) { .sim-inner { grid-template-columns: 1fr; } }
+
+/* Solar panel SVG */
+.panel-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.panel-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* Sun intensity slider */
+.sun-slider-wrap { width: 100%; }
+.sun-slider-wrap label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+input[type=range]#sunSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 0;
+  background: linear-gradient(90deg, #222 0%, var(--sun) 100%);
+  outline: none;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+}
+input[type=range]#sunSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  background: var(--sun);
+  border: 3px solid var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* Voltage / Current readouts */
+.readouts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.readout {
+  border: 1.5px solid var(--rule);
+  padding: 14px 16px;
+  background: var(--bg);
+}
+.readout .r-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 4px;
+}
+.readout .r-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--ink);
+  transition: color 0.4s;
+}
+.readout .r-unit { font-size: 14px; opacity: 0.5; }
+
+/* Phone charging display */
+.phone-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.phone-svg-outer {
+  filter: drop-shadow(3px 3px 0 var(--rule));
+}
+.batt-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.batt-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--ink);
+  transition: color 0.4s;
+}
+.charging-status {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border: 1.5px solid var(--rule);
+  color: var(--mid);
+  transition: all 0.4s;
+}
+.charging-status.on {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 12px rgba(0,230,118,0.2);
+}
+
+/* ══════════════════════════════
+   BLOCK DIAGRAM
+══════════════════════════════ */
+.diagram-card { margin-bottom: 32px; }
+
+/* ══════════════════════════════
+   TWO COL
+══════════════════════════════ */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+@media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── COMPONENT CARDS ── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.comp-item {
+  border: 1.5px solid var(--rule);
+  padding: 12px 14px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.comp-item:hover {
+  border-color: var(--sun);
+  box-shadow: 2px 2px 0 var(--sun);
+}
+.ci-num { font-size: 8px; color: var(--mid); letter-spacing: 2px; }
+.ci-name { font-size: 12px; font-weight: 700; line-height: 1.2; }
+.ci-spec { font-size: 9px; color: var(--mid); }
+.ci-tag {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border: 1px solid;
+  margin-top: 4px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.tag-s { border-color: var(--sun); color: var(--amber); }
+.tag-r { border-color: var(--teal); color: var(--teal); }
+.tag-c { border-color: var(--green); color: #00a85a; }
+.tag-o { border-color: var(--rust); color: var(--rust); }
+.tag-p { border-color: var(--mid); color: var(--mid); }
+
+/* ── CONNECTION TABLE ── */
+table { width:100%; border-collapse:collapse; font-size:10px; }
+thead tr { background: var(--ink); color: var(--sun); }
+thead th { padding: 9px 12px; text-align:left; font-size:8px; letter-spacing:2px; text-transform:uppercase; }
+tbody tr { border-bottom: 1px solid var(--rule); transition: background 0.15s; }
+tbody tr:hover { background: rgba(255,208,0,0.04); }
+tbody td { padding: 8px 12px; vertical-align:top; }
+.t-from { color: var(--panel); font-weight:700; }
+.t-to   { color: var(--rust);  font-weight:700; }
+.t-note { color: var(--mid); }
+
+/* ── HOW IT WORKS ── */
+.steps { display:flex; flex-direction:column; gap:0; }
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+  animation: rise 0.5s ease both;
+}
+.step:last-child { border-bottom: none; }
+.step-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: var(--rule);
+  line-height: 1;
+  min-width: 44px;
+  text-align: center;
+}
+.step-body .s-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.step-body .s-desc {
+  font-size: 10px;
+  color: var(--mid);
+  line-height: 1.7;
+}
+
+/* stagger delays */
+.card:nth-child(1) { animation-delay:.05s }
+.card:nth-child(2) { animation-delay:.10s }
+.card:nth-child(3) { animation-delay:.15s }
+.card:nth-child(4) { animation-delay:.20s }
+.step:nth-child(1) { animation-delay:.05s }
+.step:nth-child(2) { animation-delay:.12s }
+.step:nth-child(3) { animation-delay:.19s }
+.step:nth-child(4) { animation-delay:.26s }
+.step:nth-child(5) { animation-delay:.33s }
+.step:nth-child(6) { animation-delay:.40s }
+
+/* ── ENERGY FLOW BAR ── */
+.flow-bar {
+  display: flex;
+  height: 32px;
+  border: 1.5px solid var(--rule);
+  overflow: hidden;
+  margin-top: 16px;
+  box-shadow: 3px 3px 0 var(--rule);
+}
+.flow-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-right: 1px solid rgba(0,0,0,0.15);
+  transition: flex 0.6s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 6px;
+}
+.flow-seg:last-child { border-right: none; }
+.fs-solar  { background: var(--sun); color: var(--ink); flex: 2; }
+.fs-reg    { background: var(--amber); color: #fff; flex: 1.5; }
+.fs-batt   { background: #2196F3; color: #fff; flex: 1.5; }
+.fs-boost  { background: var(--teal); color: #fff; flex: 1.5; }
+.fs-phone  { background: var(--green); color: var(--ink); flex: 2; }
+
+footer {
+  text-align: center;
+  font-size: 9px;
+  color: var(--mid);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 48px;
+  padding: 0 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="sub">Electronics Project · Complete Reference</div>
+    <h1>Mobile Charger<br><span class="hl">Solar Panel</span></h1>
+  </div>
+  <div class="hero-right">
+    <div class="spec-chip lit">Output: 5V USB</div>
+    <div class="spec-chip">Input: 6V–18V Solar</div>
+    <div class="spec-chip">IC: CN3791 / TP4056</div>
+    <div class="spec-chip">Battery: Li-Ion 3.7V</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══ LIVE SIMULATOR ══ -->
+<div class="sec-label">01 — Interactive Simulation</div>
+<div id="simulator" class="card" style="animation-delay:0s;">
+  <div class="sim-inner">
+
+    <!-- SOLAR PANEL + SLIDER -->
+    <div class="panel-wrap">
+      <svg width="160" height="130" viewBox="0 0 160 130" id="panelSvg">
+        <!-- frame -->
+        <rect x="4" y="4" width="152" height="122" rx="3" fill="#0d1f16" stroke="#1B3A2A" stroke-width="2"/>
+        <!-- cell grid 4x3 -->
+        <defs>
+          <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1a5c3a"/>
+            <stop offset="100%" stop-color="#0d3020"/>
+          </linearGradient>
+        </defs>
+        <!-- cells -->
+        <g id="cells">
+          <!-- row 1 -->
+          <rect x="10" y="10" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="46" y="10" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="82" y="10" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="118" y="10" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <!-- row 2 -->
+          <rect x="10" y="36" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="46" y="36" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="82" y="36" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="118" y="36" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <!-- row 3 -->
+          <rect x="10" y="62" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="46" y="62" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="82" y="62" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="118" y="62" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <!-- row 4 -->
+          <rect x="10" y="88" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="46" y="88" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="82" y="88" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+          <rect x="118" y="88" width="32" height="22" rx="2" fill="url(#cg)" stroke="#0f4028" stroke-width="1"/>
+        </g>
+        <!-- cell bus bars -->
+        <g stroke="#a0c0a8" stroke-width="0.6" opacity="0.4">
+          <line x1="10" y1="21" x2="42" y2="21"/><line x1="46" y1="21" x2="78" y2="21"/>
+          <line x1="82" y1="21" x2="114" y2="21"/><line x1="118" y1="21" x2="150" y2="21"/>
+          <line x1="10" y1="47" x2="42" y2="47"/><line x1="46" y1="47" x2="78" y2="47"/>
+          <line x1="82" y1="47" x2="114" y2="47"/><line x1="118" y1="47" x2="150" y2="47"/>
+          <line x1="10" y1="73" x2="42" y2="73"/><line x1="46" y1="73" x2="78" y2="73"/>
+          <line x1="82" y1="73" x2="114" y2="73"/><line x1="118" y1="73" x2="150" y2="73"/>
+          <line x1="10" y1="99" x2="42" y2="99"/><line x1="46" y1="99" x2="78" y2="99"/>
+          <line x1="82" y1="99" x2="114" y2="99"/><line x1="118" y1="99" x2="150" y2="99"/>
+        </g>
+        <!-- sun glow overlay (animated) -->
+        <rect id="glowOverlay" x="4" y="4" width="152" height="122" rx="3" fill="rgba(255,208,0,0)" style="transition:fill 0.5s;"/>
+        <!-- terminals -->
+        <rect x="62" y="114" width="14" height="12" rx="1" fill="#c8a000"/>
+        <rect x="84" y="114" width="14" height="12" rx="1" fill="#555"/>
+        <text x="69" y="123" font-family="Chivo Mono,monospace" font-size="7" fill="#fff">+</text>
+        <text x="91" y="123" font-family="Chivo Mono,monospace" font-size="7" fill="#fff">−</text>
+      </svg>
+      <div class="sun-slider-wrap">
+        <label>☀ Sunlight Intensity</label>
+        <input type="range" id="sunSlider" min="0" max="100" value="70">
+        <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--mid);margin-top:4px;">
+          <span>NIGHT</span><span>CLOUDY</span><span>FULL SUN</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- READOUTS -->
+    <div class="readouts">
+      <div class="readout">
+        <div class="r-label">Solar Voltage</div>
+        <div class="r-val" id="rVolt">0.0<span class="r-unit"> V</span></div>
+      </div>
+      <div class="readout">
+        <div class="r-label">Charging Current</div>
+        <div class="r-val" id="rAmps">0.00<span class="r-unit"> A</span></div>
+      </div>
+      <div class="readout">
+        <div class="r-label">Output Power</div>
+        <div class="r-val" id="rWatt">0.0<span class="r-unit"> W</span></div>
+      </div>
+      <div class="readout">
+        <div class="r-label">Battery Level</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="flex:1;height:10px;background:var(--rule);border-radius:0;overflow:hidden;">
+            <div id="battBar" style="height:100%;width:0%;background:var(--green);transition:width 0.5s,background 0.5s;"></div>
+          </div>
+          <div class="r-val" id="rBatt" style="font-size:20px;">0<span class="r-unit">%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHONE -->
+    <div class="phone-wrap">
+      <svg class="phone-svg-outer" width="110" height="200" viewBox="0 0 110 200">
+        <!-- phone body -->
+        <rect x="5" y="5" width="100" height="190" rx="14" fill="#1a1a1a" stroke="#333" stroke-width="2"/>
+        <rect x="10" y="10" width="90" height="180" rx="11" fill="#111"/>
+        <!-- screen -->
+        <rect x="14" y="26" width="82" height="148" rx="4" fill="#0a0a0a" id="phoneScreen"/>
+        <!-- notch -->
+        <rect x="38" y="14" width="34" height="8" rx="4" fill="#111"/>
+        <!-- battery icon on screen -->
+        <rect x="30" y="60" width="50" height="26" rx="4" fill="none" stroke="#444" stroke-width="2"/>
+        <rect x="80" y="66" width="6" height="14" rx="2" fill="#444"/>
+        <rect id="phoneBattFill" x="33" y="63" width="0" height="20" rx="2" fill="var(--green)" style="transition:width 0.5s,fill 0.5s;"/>
+        <text x="55" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="11" fill="#555" id="phonePctText">0%</text>
+        <!-- lightning bolt -->
+        <text x="55" y="130" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="22" fill="#333" id="boltIcon">⚡</text>
+        <!-- USB port -->
+        <rect x="38" y="185" width="34" height="8" rx="2" fill="#333"/>
+        <rect x="44" y="187" width="22" height="4" rx="1" fill="#222"/>
+        <!-- home indicator -->
+        <rect x="40" y="178" width="30" height="3" rx="1.5" fill="#333"/>
+        <!-- side buttons -->
+        <rect x="3" y="50" width="3" height="20" rx="1.5" fill="#2a2a2a"/>
+        <rect x="3" y="75" width="3" height="30" rx="1.5" fill="#2a2a2a"/>
+        <rect x="104" y="60" width="3" height="36" rx="1.5" fill="#2a2a2a"/>
+      </svg>
+      <div class="batt-label">Phone Battery</div>
+      <div class="batt-pct" id="phonePctLarge">0%</div>
+      <div class="charging-status" id="chargingStatus">● Disconnected</div>
+    </div>
+  </div>
+
+  <!-- ENERGY FLOW -->
+  <div style="margin-top:20px;">
+    <div style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-bottom:6px;">Energy Flow Path</div>
+    <div class="flow-bar">
+      <div class="flow-seg fs-solar">☀ Solar</div>
+      <div class="flow-seg fs-reg">▷ Regulator</div>
+      <div class="flow-seg fs-batt">▷ Battery</div>
+      <div class="flow-seg fs-boost">▷ Boost</div>
+      <div class="flow-seg fs-phone">▷ ⚡ Phone</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BLOCK DIAGRAM ══ -->
+<div class="sec-label">02 — Block Diagram</div>
+<div class="diagram-card card" style="animation-delay:.1s;overflow-x:auto;">
+<svg viewBox="0 0 900 300" width="100%" style="min-width:600px;display:block;">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3z" fill="#FF8C00"/>
+    </marker>
+    <marker id="arrg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3z" fill="#00E676"/>
+    </marker>
+    <marker id="arrt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3z" fill="#00BCD4"/>
+    </marker>
+    <marker id="arry" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3z" fill="#FFD000"/>
+    </marker>
+    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="100%" stop-color="#0d3020"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── SUN ── -->
+  <circle cx="54" cy="110" r="36" fill="#FFD000" opacity="0.15"/>
+  <circle cx="54" cy="110" r="26" fill="#FFD000" opacity="0.8"/>
+  <text x="54" y="115" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="11" fill="#1a1a1a">SUN</text>
+  <!-- rays -->
+  <g stroke="#FFD000" stroke-width="2" opacity="0.6">
+    <line x1="54" y1="76" x2="54" y2="66"/>
+    <line x1="54" y1="144" x2="54" y2="154"/>
+    <line x1="20" y1="110" x2="10" y2="110"/>
+    <line x1="88" y1="110" x2="98" y2="110"/>
+    <line x1="30" y1="86" x2="23" y2="79"/>
+    <line x1="78" y1="134" x2="85" y2="141"/>
+    <line x1="78" y1="86" x2="85" y2="79"/>
+    <line x1="30" y1="134" x2="23" y2="141"/>
+  </g>
+
+  <!-- sun → panel arrow (photons) -->
+  <line x1="92" y1="110" x2="126" y2="110" stroke="#FFD000" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arry)"/>
+  <text x="109" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#FFD000">Photons</text>
+
+  <!-- ── SOLAR PANEL ── -->
+  <rect x="128" y="68" width="110" height="84" rx="4" fill="url(#panelGrad)" stroke="#1B3A2A" stroke-width="2"/>
+  <!-- mini cell grid -->
+  <g fill="#1a6b3a" stroke="#0f4028" stroke-width="0.8">
+    <rect x="134" y="74" width="22" height="16" rx="1"/><rect x="160" y="74" width="22" height="16" rx="1"/>
+    <rect x="186" y="74" width="22" height="16" rx="1"/><rect x="212" y="74" width="20" height="16" rx="1"/>
+    <rect x="134" y="94" width="22" height="16" rx="1"/><rect x="160" y="94" width="22" height="16" rx="1"/>
+    <rect x="186" y="94" width="22" height="16" rx="1"/><rect x="212" y="94" width="20" height="16" rx="1"/>
+    <rect x="134" y="114" width="22" height="16" rx="1"/><rect x="160" y="114" width="22" height="16" rx="1"/>
+    <rect x="186" y="114" width="22" height="16" rx="1"/><rect x="212" y="114" width="20" height="16" rx="1"/>
+    <rect x="134" y="134" width="22" height="12" rx="1"/><rect x="160" y="134" width="22" height="12" rx="1"/>
+    <rect x="186" y="134" width="22" height="12" rx="1"/><rect x="212" y="134" width="20" height="12" rx="1"/>
+  </g>
+  <text x="183" y="162" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="13" fill="#1a1a1a">SOLAR PANEL</text>
+  <text x="183" y="173" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">6V–18V · 5W–10W</text>
+
+  <!-- panel → diode -->
+  <line x1="238" y1="110" x2="278" y2="110" stroke="#FF8C00" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="258" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#FF8C00">DC out</text>
+
+  <!-- ── SCHOTTKY DIODE ── -->
+  <rect x="280" y="90" width="70" height="40" rx="3" fill="#fff7e6" stroke="#FF8C00" stroke-width="1.5"/>
+  <!-- diode symbol -->
+  <line x1="295" y1="110" x2="315" y2="110" stroke="#FF8C00" stroke-width="1.5"/>
+  <polygon points="315,103 315,117 327,110" fill="#FF8C00"/>
+  <line x1="327" y1="103" x2="327" y2="117" stroke="#FF8C00" stroke-width="2"/>
+  <line x1="327" y1="110" x2="342" y2="110" stroke="#FF8C00" stroke-width="1.5"/>
+  <text x="315" y="120" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="7" fill="#5A5A5A">1N5819</text>
+  <text x="315" y="86" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="10" fill="#FF8C00">SCHOTTKY</text>
+
+  <!-- diode → charge controller -->
+  <line x1="350" y1="110" x2="388" y2="110" stroke="#FF8C00" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ── CHARGE CONTROLLER ── -->
+  <rect x="390" y="68" width="120" height="84" rx="4" fill="#e8f4fd" stroke="#00BCD4" stroke-width="2"/>
+  <text x="450" y="92" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="13" fill="#1a1a1a">CHARGE</text>
+  <text x="450" y="107" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="13" fill="#1a1a1a">CONTROLLER</text>
+  <text x="450" y="122" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">CN3791 / TP4056</text>
+  <text x="450" y="134" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">MPPT enabled</text>
+  <text x="450" y="145" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Overcharge protect</text>
+
+  <!-- controller → battery -->
+  <line x1="510" y1="110" x2="548" y2="110" stroke="#2196F3" stroke-width="1.8" marker-end="url(#arrt)"/>
+  <text x="529" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#2196F3">CC/CV</text>
+
+  <!-- ── BATTERY ── -->
+  <rect x="550" y="78" width="90" height="64" rx="4" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <!-- battery symbol -->
+  <rect x="562" y="96" width="48" height="28" rx="2" fill="none" stroke="#2196F3" stroke-width="1.5"/>
+  <rect x="610" y="103" width="8" height="14" rx="1" fill="#2196F3"/>
+  <rect x="565" y="99" width="18" height="22" rx="1" fill="#2196F3" opacity="0.6"/>
+  <text x="595" y="150" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="13" fill="#1a1a1a">BATTERY</text>
+  <text x="595" y="163" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Li-Ion 3.7V 3000mAh</text>
+
+  <!-- battery → boost converter -->
+  <line x1="640" y1="110" x2="678" y2="110" stroke="#00E676" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <text x="659" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#00E676">3.7V</text>
+
+  <!-- ── BOOST CONVERTER ── -->
+  <rect x="680" y="85" width="110" height="50" rx="4" fill="#e8fdf0" stroke="#00E676" stroke-width="2"/>
+  <text x="735" y="104" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="12" fill="#1a1a1a">BOOST</text>
+  <text x="735" y="118" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="12" fill="#1a1a1a">CONVERTER</text>
+  <text x="735" y="128" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">MT3608 / XL6009</text>
+
+  <!-- boost → USB -->
+  <line x1="790" y1="110" x2="828" y2="110" stroke="#00E676" stroke-width="1.8" marker-end="url(#arrg)"/>
+  <text x="809" y="104" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#00E676">5V out</text>
+
+  <!-- ── USB OUTPUT ── -->
+  <rect x="830" y="88" width="62" height="44" rx="4" fill="#f0fff4" stroke="#00E676" stroke-width="1.8"/>
+  <!-- USB symbol -->
+  <rect x="842" y="100" width="38" height="20" rx="3" fill="none" stroke="#00E676" stroke-width="1.5"/>
+  <rect x="845" y="103" width="8" height="14" rx="1" fill="#00E676" opacity="0.4"/>
+  <rect x="856" y="103" width="8" height="14" rx="1" fill="#00E676" opacity="0.4"/>
+  <rect x="867" y="103" width="8" height="14" rx="1" fill="#00E676" opacity="0.4"/>
+  <text x="861" y="143" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="11" fill="#1a1a1a">USB OUT</text>
+  <text x="861" y="153" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="7.5" fill="#5A5A5A">5V · 1–2A</text>
+
+  <!-- ── GND RAIL ── -->
+  <line x1="128" y1="230" x2="892" y2="230" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="510" y="244" text-anchor="middle" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">COMMON GROUND RAIL — GND (All modules)</text>
+  <!-- GND drops -->
+  <g stroke="#888" stroke-width="1">
+    <line x1="183" y1="152" x2="183" y2="230"/><line x1="315" y1="130" x2="315" y2="230"/>
+    <line x1="450" y1="152" x2="450" y2="230"/><line x1="595" y1="142" x2="595" y2="230"/>
+    <line x1="735" y1="135" x2="735" y2="230"/><line x1="861" y1="132" x2="861" y2="230"/>
+  </g>
+
+  <!-- ── LEGEND ── -->
+  <rect x="10" y="254" width="880" height="40" rx="2" fill="rgba(0,0,0,0.03)" stroke="#D8D0C0" stroke-width="1"/>
+  <line x1="20" y1="274" x2="50" y2="274" stroke="#FFD000" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="56" y="278" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Solar Energy</text>
+  <line x1="140" y1="274" x2="170" y2="274" stroke="#FF8C00" stroke-width="2"/>
+  <text x="176" y="278" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Regulated DC</text>
+  <line x1="266" y1="274" x2="296" y2="274" stroke="#2196F3" stroke-width="2"/>
+  <text x="302" y="278" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Battery Charge (CC/CV)</text>
+  <line x1="436" y1="274" x2="466" y2="274" stroke="#00E676" stroke-width="2"/>
+  <text x="472" y="278" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Boosted 5V Output</text>
+  <line x1="586" y1="274" x2="616" y2="274" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="622" y="278" font-family="Chivo Mono,monospace" font-size="8" fill="#5A5A5A">Ground Rail</text>
+</svg>
+</div>
+
+<!-- ══ COMPONENTS + CONNECTIONS ══ -->
+<div class="two-col">
+
+  <!-- COMPONENTS -->
+  <div class="card" style="animation-delay:.15s;">
+    <div class="sec-label">03 — Components</div>
+    <div class="comp-grid">
+      <div class="comp-item">
+        <div class="ci-num">C01</div>
+        <div class="ci-name">Solar Panel</div>
+        <div class="ci-spec">6V–12V · 5W–10W<br>Polycrystalline</div>
+        <div class="ci-tag tag-s">Source</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C02</div>
+        <div class="ci-name">Schottky Diode</div>
+        <div class="ci-spec">1N5819 · 40V 1A<br>Reverse protection</div>
+        <div class="ci-tag tag-r">Protection</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C03</div>
+        <div class="ci-name">Charge Controller</div>
+        <div class="ci-spec">CN3791 / TP4056<br>MPPT · 4.2V cutoff</div>
+        <div class="ci-tag tag-c">Control</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C04</div>
+        <div class="ci-name">Li-Ion Battery</div>
+        <div class="ci-spec">3.7V · 3000–5000mAh<br>18650 cell</div>
+        <div class="ci-tag tag-r">Storage</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C05</div>
+        <div class="ci-name">Boost Converter</div>
+        <div class="ci-spec">MT3608 / XL6009<br>3.7V→5V · 2A</div>
+        <div class="ci-tag tag-c">Convert</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C06</div>
+        <div class="ci-name">USB Type-A Port</div>
+        <div class="ci-spec">5V output · 1–2A<br>Female jack</div>
+        <div class="ci-tag tag-o">Output</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C07</div>
+        <div class="ci-name">Capacitors</div>
+        <div class="ci-spec">100µF electrolytic<br>0.1µF ceramic bypass</div>
+        <div class="ci-tag tag-p">Filter</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C08</div>
+        <div class="ci-name">Resistors</div>
+        <div class="ci-spec">1kΩ · 10kΩ<br>Voltage divider / LED</div>
+        <div class="ci-tag tag-p">Passive</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C09</div>
+        <div class="ci-name">LED Indicators</div>
+        <div class="ci-spec">Red (charging)<br>Green (full / ready)</div>
+        <div class="ci-tag tag-o">Indicator</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C10</div>
+        <div class="ci-name">Toggle Switch</div>
+        <div class="ci-spec">SPDT · 3A rated<br>ON/OFF control</div>
+        <div class="ci-tag tag-p">Control</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C11</div>
+        <div class="ci-name">PCB / Breadboard</div>
+        <div class="ci-spec">Perfboard or<br>custom PCB layout</div>
+        <div class="ci-tag tag-p">Board</div>
+      </div>
+      <div class="comp-item">
+        <div class="ci-num">C12</div>
+        <div class="ci-name">Enclosure / Case</div>
+        <div class="ci-spec">ABS plastic box<br>Weatherproof (opt.)</div>
+        <div class="ci-tag tag-p">Mechanical</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="card" style="animation-delay:.2s;">
+    <div class="sec-label">04 — How It Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <div class="s-title">Solar Energy Capture</div>
+          <div class="s-desc">The solar panel (6V–12V) converts sunlight into DC electricity via the photovoltaic effect. Output varies with sunlight intensity.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <div class="s-title">Reverse Protection</div>
+          <div class="s-desc">The 1N5819 Schottky diode blocks current from flowing back into the panel at night, preventing battery discharge.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <div class="s-title">Charge Controller (MPPT)</div>
+          <div class="s-desc">The CN3791/TP4056 IC manages charging using CC/CV method. Charges battery to exactly 4.2V, cuts off to prevent overcharging.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <div class="step-body">
+          <div class="s-title">Energy Storage</div>
+          <div class="s-desc">The 3.7V Li-Ion 18650 cell stores the harvested solar energy, providing power even at night or during cloudy periods.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">5</div>
+        <div class="step-body">
+          <div class="s-title">Voltage Boost to 5V</div>
+          <div class="s-desc">MT3608/XL6009 boost converter steps up 3.7V battery voltage to a stable regulated 5V output at up to 2A for charging.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">6</div>
+        <div class="step-body">
+          <div class="s-title">USB Output to Phone</div>
+          <div class="s-desc">A standard USB Type-A port delivers 5V/1–2A to any mobile device. LEDs indicate charging status and battery level.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ CONNECTION TABLE ══ -->
+<div class="sec-label">05 — Wiring Connection Guide</div>
+<div class="card" style="animation-delay:.25s;overflow-x:auto;margin-bottom:32px;">
+  <table>
+    <thead>
+      <tr><th>#</th><th>From</th><th>Terminal</th><th>To</th><th>Terminal</th><th>Wire</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td class="t-from">Solar Panel</td><td>+ (Positive)</td><td class="t-to">Schottky Diode</td><td>Anode (A)</td><td>Red</td><td class="t-note">Solar positive input</td></tr>
+      <tr><td>2</td><td class="t-from">Solar Panel</td><td>− (Negative)</td><td class="t-to">Common GND rail</td><td>GND</td><td>Black</td><td class="t-note">Solar ground</td></tr>
+      <tr><td>3</td><td class="t-from">Schottky Diode</td><td>Cathode (K)</td><td class="t-to">CN3791 / TP4056</td><td>VIN+</td><td>Red</td><td class="t-note">Protected DC input</td></tr>
+      <tr><td>4</td><td class="t-from">CN3791 / TP4056</td><td>BAT+ out</td><td class="t-to">Li-Ion Battery</td><td>+ Pole</td><td>Red</td><td class="t-note">Charge current to battery</td></tr>
+      <tr><td>5</td><td class="t-from">CN3791 / TP4056</td><td>BAT− / GND</td><td class="t-to">Battery</td><td>− Pole</td><td>Black</td><td class="t-note">Battery negative</td></tr>
+      <tr><td>6</td><td class="t-from">CN3791</td><td>CHRG LED pin</td><td class="t-to">Red LED</td><td>Anode via 1kΩ</td><td>Orange</td><td class="t-note">Charging indicator (ON while charging)</td></tr>
+      <tr><td>7</td><td class="t-from">CN3791</td><td>DONE LED pin</td><td class="t-to">Green LED</td><td>Anode via 1kΩ</td><td>Green</td><td class="t-note">Full charge indicator</td></tr>
+      <tr><td>8</td><td class="t-from">Li-Ion Battery</td><td>+ Pole</td><td class="t-to">Toggle Switch</td><td>Pin 1</td><td>Red</td><td class="t-note">Power ON/OFF control</td></tr>
+      <tr><td>9</td><td class="t-from">Toggle Switch</td><td>Pin 2</td><td class="t-to">MT3608 Boost</td><td>VIN+</td><td>Red</td><td class="t-note">3.7V to boost input</td></tr>
+      <tr><td>10</td><td class="t-from">Li-Ion Battery</td><td>− Pole</td><td class="t-to">MT3608 Boost</td><td>GND</td><td>Black</td><td class="t-note">Boost module ground</td></tr>
+      <tr><td>11</td><td class="t-from">MT3608 Boost</td><td>VOUT+</td><td class="t-to">USB Type-A Port</td><td>VBUS (Pin 1)</td><td>Red</td><td class="t-note">5V regulated output</td></tr>
+      <tr><td>12</td><td class="t-from">MT3608 Boost</td><td>VOUT−</td><td class="t-to">USB Type-A Port</td><td>GND (Pin 4)</td><td>Black</td><td class="t-note">USB ground</td></tr>
+      <tr><td>13</td><td class="t-from">USB Port</td><td>D− (Pin 2)</td><td class="t-to">D+ (Pin 3)</td><td>Short together</td><td>White</td><td class="t-note">Enables Apple / fast-charge detect</td></tr>
+      <tr><td>14</td><td class="t-from">100µF Cap</td><td>+ / −</td><td class="t-to">MT3608 VIN</td><td>Across VIN–GND</td><td>—</td><td class="t-note">Input filtering capacitor</td></tr>
+      <tr><td>15</td><td class="t-from">100µF Cap</td><td>+ / −</td><td class="t-to">MT3608 VOUT</td><td>Across VOUT–GND</td><td>—</td><td class="t-note">Output smoothing capacitor</td></tr>
+      <tr><td>16</td><td class="t-from">All modules</td><td>GND pins</td><td class="t-to">Common GND rail</td><td>Single point</td><td>Black</td><td class="t-note">Star ground topology</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>Solar Mobile Charger · Complete Reference · 6V–12V Panel → 5V USB Output · Li-Ion Storage System</footer>
+
+<script>
+const slider  = document.getElementById('sunSlider');
+const rVolt   = document.getElementById('rVolt');
+const rAmps   = document.getElementById('rAmps');
+const rWatt   = document.getElementById('rWatt');
+const rBatt   = document.getElementById('rBatt');
+const battBar = document.getElementById('battBar');
+const glow    = document.getElementById('glowOverlay');
+const phonePctText  = document.getElementById('phonePctText');
+const phonePctLarge = document.getElementById('phonePctLarge');
+const phoneBattFill = document.getElementById('phoneBattFill');
+const chargingStatus= document.getElementById('chargingStatus');
+const boltIcon      = document.getElementById('boltIcon');
+
+let battLevel = 35; // simulated battery %
+let charging  = false;
+let animFrame;
+
+function lerp(a,b,t){return a+(b-a)*t;}
+
+function update() {
+  const sun = parseInt(slider.value); // 0–100
+
+  // Solar voltage: 0 sun→0V, 100 sun→12V (open circuit ~18V panel with MPPT)
+  const volt = sun < 5 ? 0 : (sun / 100) * 12;
+  // Current ramps up with sun
+  const amps = sun < 20 ? 0 : ((sun - 20) / 80) * 1.8;
+  const watt = volt * amps;
+
+  charging = sun >= 20;
+
+  rVolt.innerHTML = volt.toFixed(1) + '<span class="r-unit"> V</span>';
+  rAmps.innerHTML = amps.toFixed(2) + '<span class="r-unit"> A</span>';
+  rWatt.innerHTML = watt.toFixed(1) + '<span class="r-unit"> W</span>';
+
+  // voltage colour
+  const vc = sun < 20 ? '#888' : sun < 60 ? '#FF8C00' : '#00E676';
+  rVolt.style.color = vc;
+  rAmps.style.color = charging ? '#00E676' : '#888';
+  rWatt.style.color = charging ? '#FFD000' : '#888';
+
+  // panel glow
+  const glowAlpha = (sun / 100) * 0.25;
+  glow.style.fill = `rgba(255,208,0,${glowAlpha})`;
+
+  // charging status
+  if (charging) {
+    chargingStatus.textContent = '⚡ Charging';
+    chargingStatus.className   = 'charging-status on';
+    boltIcon.style.fill        = '#FFD000';
+  } else {
+    chargingStatus.textContent = '● Disconnected';
+    chargingStatus.className   = 'charging-status';
+    boltIcon.style.fill        = '#333';
+  }
+}
+
+// Simulate battery filling
+function tickBattery() {
+  const sun = parseInt(slider.value);
+  if (sun >= 20 && battLevel < 100) {
+    battLevel = Math.min(100, battLevel + 0.05);
+  } else if (sun < 10 && battLevel > 10) {
+    battLevel = Math.max(10, battLevel - 0.01);
+  }
+
+  const pct = Math.round(battLevel);
+  rBatt.innerHTML = pct + '<span class="r-unit">%</span>';
+  battBar.style.width = pct + '%';
+  battBar.style.background = pct < 30 ? '#ef4444' : pct < 60 ? '#FF8C00' : '#00E676';
+
+  // Phone
+  const phonePct = Math.min(100, Math.round(battLevel));
+  phonePctText.textContent = phonePct + '%';
+  phonePctLarge.textContent = phonePct + '%';
+  phonePctLarge.style.color = phonePct < 30 ? '#ef4444' : phonePct < 60 ? '#FF8C00' : '#00E676';
+  const fillW = (phonePct / 100) * 42; // max 42px fill inside battery icon
+  phoneBattFill.style.width  = fillW + 'px';
+  phoneBattFill.style.fill   = phonePct < 30 ? '#ef4444' : phonePct < 60 ? '#FF8C00' : '#00E676';
+
+  animFrame = requestAnimationFrame(tickBattery);
+}
+
+slider.addEventListener('input', update);
+update();
+tickBattery();
+</script>
+</body>
+</html>

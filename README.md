@@ -10,11 +10,9 @@ This project is a Solar Mobile Charger developed using a solar panel,battery,cha
 -Solar Panel
 -TP4056/CN3791 Charge Controller
 -18650  Li-ion Battery
--Boost Converter
--USB Port
+-Boost Converter MT3608
+-Type-A USB Port
 -Diode
--LED
--Switch
 
 ## Working
 The solar panel captures sunlight and converts it into electricity.
